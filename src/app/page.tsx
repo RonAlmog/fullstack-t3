@@ -3,11 +3,13 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import Todos from "./_components/todos";
 // import { signIn, signOut, useSession } from "next-auth/react";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
+  console.log("session:", session);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -16,7 +18,11 @@ export default async function Home() {
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center justify-center gap-4">
             <p className="text-center text-2xl text-white">
-              {session && <span>Logged in as {session.user?.name}</span>}
+              {session && (
+                <span>
+                  Logged in as {session.user?.name}, {session.user?.email}
+                </span>
+              )}
             </p>
             <Link
               href={session ? "/api/auth/signout" : "/api/auth/signin"}
@@ -26,7 +32,12 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-
+        {session && (
+          <div className="grid-col grid gap-4 rounded-xl bg-white/10 p-4 text-white">
+            <h3 className="text-xl font-bold">Todos</h3>
+            <Todos />
+          </div>
+        )}
         <CrudShowcase />
       </div>
     </main>

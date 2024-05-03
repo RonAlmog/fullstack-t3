@@ -21,7 +21,7 @@ export const todoRouter = createTRPCRouter({
     console.log(todos);
     return [
       { id: "fakeid", text: "fake it", done: false },
-      { id: "fakeid2", text: "fake it 2", done: false },
+      { id: "fakeid2", text: "fake it 2", done: true },
     ];
   }),
 
