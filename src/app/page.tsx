@@ -4,6 +4,7 @@ import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import Todos from "./_components/todos";
+import CreateTodo from "~/server/api/routers/create-todo";
 // import { signIn, signOut, useSession } from "next-auth/react";
 
 export default async function Home() {
@@ -36,6 +37,7 @@ export default async function Home() {
           <div className="grid-col grid gap-4 rounded-xl bg-white/10 p-4 text-white">
             <h3 className="text-xl font-bold">Todos</h3>
             <Todos />
+            <CreateTodo />
           </div>
         )}
         <CrudShowcase />

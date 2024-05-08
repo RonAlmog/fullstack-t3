@@ -1,4 +1,5 @@
 import type { Todo } from "~/types";
+import { api } from "~/trpc/react";
 
 type Props = {
   todo: Todo;
@@ -6,6 +7,12 @@ type Props = {
 
 const TodoComponent = ({ todo }: Props) => {
   const { id, text, done } = todo;
+  const trpc = api.useContext();
+  const { mutate: doneMutation } = api.todo.toggle.useMutation({
+    onSettled: async () => {
+      await trpc.todo.all.invalidate();
+    },
+  });
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -15,6 +22,9 @@ const TodoComponent = ({ todo }: Props) => {
           name="done"
           id="done"
           defaultChecked={done}
+          onChange={(e) => {
+            doneMutation({ id, done: e.target.checked });
+          }}
         />
         <label htmlFor="done" className={`cursor-pointer`}>
           {text}
